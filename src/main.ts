@@ -3,7 +3,7 @@ import { PlaywrightCrawler, ProxyConfiguration } from 'crawlee';
 
 import { router } from './routes.js';
 
-const startUrls = ['https://crawlee.dev'];
+const startUrls = ["https://www.vividseats.com/"];
 
 const crawler = new PlaywrightCrawler({
     // proxyConfiguration: new ProxyConfiguration({ proxyUrls: ['...'] }),
