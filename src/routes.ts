@@ -4,36 +4,33 @@ export const router = createPlaywrightRouter();
 
 enum labels {
     Tickets = "Tickets",
-    Home = "Home"
+    Home = "Home",
+    Start = "Start"
 }
 
-enum selectors {
-    events_in_all_locations = ".events-in-all-locations",
-    event_element = ".styles_grid__2V6e6",
-    show_more_button = ".styles_button__3m2d-.styles_tertiary__1Hyu5.styles_large__1Gtzi" // data-testid
-
-}
 // summary of the main page
-router.addDefaultHandler(async ({ enqueueLinks, log }) => {
+router.addDefaultHandler(async ({ enqueueLinks }) => {
     log.info(`enqueueing new URLs`);
     await enqueueLinks({
-        // globs: ['https://crawlee.dev/**'],
-        label: labels.Home,
+        globs: ['https://vividseats.com/**'],
     });
 });
 
-router.addHandler(labels.Tickets, async ({ request, page, pushData }) => {
 
-    const {url} = request
-    const event_el = await page.$("")
+router.addHandler(labels.Start, async ({ enqueueLinks, page, request }) => {
+    const { url } = request
+    log.info(`crawling ${url}, [label: Start]`)
 
+    const __next_data__ = await page.evaluate(() => {
+        const script = document.querySelector("#__NEXT_DATA__")
+
+        return script ? JSON.parse(script.innerHTML) : null
+    })
+
+    if (__next_data__) {
+
+    } else {
+        log.error("__NEXT_DATA__ is not supported on this page")
+    }
 })
-router.addHandler(labels.Home, async ({ request, page, pushData }) => {
-    const title = await page.title();
-    log.info(`${title}`, { url: request.loadedUrl });
 
-    await pushData({
-        url: request.loadedUrl,
-        title,
-    });
-});
