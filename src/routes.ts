@@ -88,9 +88,9 @@ router.addHandler(labels.Lists, async ({ $, request }) => {
                 // };
 
                 const obj = {
-                    id: "nba",
-                    title: "nba",
-                    description: "nba package description",
+                    // id: "nba",
+                    // title: "nba",
+                    // description: "nba package description",
                     acitve_pkgs: [
                         {
                             path: "/p/packages/sports/basketball/nba/" + id,
