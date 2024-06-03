@@ -5,8 +5,7 @@ import { KeyValueStore } from "crawlee";
 export const router = createCheerioRouter();
 
 // summary of the main page
-router.addHandler(labels.Start, async ({ enqueueLinks, request, $ }) => {
-    
+router.addHandler(labels.Start, async ({ request, $ }) => {
   const { url } = request;
   log.info(`enqueing new urls in [${url}], [label: Start]`);
 
@@ -33,7 +32,6 @@ router.addHandler(labels.Start, async ({ enqueueLinks, request, $ }) => {
       await request_queue.addRequest({ url: _url, label: "default" });
     }
   }
-  
 });
 
 router.addHandler(labels.Lists, async ({ $, request }) => {
