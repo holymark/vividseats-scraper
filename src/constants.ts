@@ -4,4 +4,4 @@ export enum labels {
     Home = "Home",
     Start = "Start"
 }
-export const base_url = "https://vividseats.com/"
+export const base_url = "https://vividseats.com"
