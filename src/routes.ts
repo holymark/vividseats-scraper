@@ -61,7 +61,7 @@ router.addHandler(labels.Lists, async ({ $, request }) => {
       const important = page_props[important_opts].items;
       // const ticketvista_data : any[] = []
 
-      important.map((imp: any, index: number) => {
+      important.map((imp: any) => {
         const {
           name,
           localDate,

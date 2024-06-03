@@ -19,12 +19,11 @@ const proxyConfiguration = await Actor.createProxyConfiguration();
 
 
 const crawler = new CheerioCrawler({
-    // proxyConfiguration: new ProxyConfiguration({ proxyUrls: ['...'] }),
+    proxyConfiguration,
     requestHandler: router,
-    // Comment this option to scrape the full website.
     maxRequestsPerCrawl: 20,
     preNavigationHooks: [
-        async ({ request, crawler }) => {
+        async ({ request }) => {
             if (request.headers) {
                 // Mimic human-like behavior by setting headers
                 request.headers['User-Agent'] = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36';
