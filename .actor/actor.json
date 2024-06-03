@@ -1,0 +1,120 @@
+{
+    "actorSpecification": 1,
+    "name": "vividseats-scraper",
+    "title": "Vividseats.com Scraper",
+    "description": "This actor scrapes event ticket information from VividSeats.com, a popular online ticket marketplace. It extracts detailed information about events, including title, description, date, venue, price, and ticket availability.",
+    "version": "0.0",
+    "meta": {
+        "templateId": "ts-crawlee-cheerio"
+    },
+    "storages": {
+        "dataset": {
+            "actorSpecification": 1,
+            "views": {
+                "overview": {
+                    "title": "Overview",
+                    "transformation": {
+                        "fields": [
+                            "path",
+                            "id",
+                            "title",
+                            "event_description",
+                            "date",
+                            "venue",
+                            "price",
+                            "maxPrice",
+                            "avgPrice",
+                            "medianPrice",
+                            "ticketCount",
+                            "category_btn_type",
+                            "category",
+                            "remainingText",
+                            "hotels"
+                        ],
+                        "display": {
+                            "component": "table",
+                            "properties": {
+                                "path": {
+                                    "type": "string"
+                                },
+                                "id": {
+                                    "type": "string"
+                                },
+                                "title": {
+                                    "type": "string"
+                                },
+                                "event_description": {
+                                    "type": "string"
+                                },
+                                "date": {
+                                    "type": "string"
+                                },
+                                "venue": {
+                                    "type": "string"
+                                },
+                                "price": {
+                                    "type": "number"
+                                },
+                                "maxPrice": {
+                                    "type": "number"
+                                },
+                                "avgPrice": {
+                                    "type": "number"
+                                },
+                                "medianPrice": {
+                                    "type": "number"
+                                },
+                                "ticketCount": {
+                                    "type": "integer"
+                                },
+                                "category_btn_type": {
+                                    "type": "string"
+                                },
+                                "category": {
+                                    "type": "string"
+                                },
+                                "remainingText": {
+                                    "type": "string"
+                                },
+                                "hotels": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "name": {
+                                                "type": "string"
+                                            },
+                                            "price_per_person": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "basic": {
+                                                        "type": "number"
+                                                    },
+                                                    "premium": {
+                                                        "type": "number"
+                                                    },
+                                                    "premium_plus": {
+                                                        "type": "number"
+                                                    }
+                                                },
+                                                "required": [
+                                                    "basic",
+                                                    "premium",
+                                                    "premium_plus"
+                                                ]
+                                            }
+                                        },
+                                        "required": [
+                                            "name",
+                                            "price_per_person"
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
