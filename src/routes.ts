@@ -1,6 +1,5 @@
 import { createCheerioRouter, log, Dataset, RequestQueue } from "crawlee";
 import { base_url, labels } from "./constants.js";
-import { KeyValueStore } from "crawlee";
 
 
 export const router = createCheerioRouter();
