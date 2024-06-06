@@ -53,102 +53,108 @@ router.addHandler(labels.Lists, async ({ $, request }) => {
     const important_opts = page_props.productionListData
       ? "productionListData"
       : page_props.initialProductionListData
-      ? "initialProductionListData"
-      : null;
-    const description = page_props.customPage.content;
-    const category_btn_type = page_props.customPage.title;
-    const pkg_categ = page_props.customPage.category.subCategories.name;
+        ? "initialProductionListData"
+        : null;
+    const description = page_props.customPage.content ? page_props.customPage.content : "No description available";
+    const category_btn_type = page_props.customPage.title ? page_props.customPage.content : "No category titile available";
+    const pkg_categ = page_props.customPage.category.subCategories.name ? page_props.customPage.category.subCategories.name : "No sub-categories name available"
 
     if (important_opts) {
       const important =
         page_props[important_opts].items.length > 0
           ? page_props[important_opts].items
           : null;
-      // const ticketvista_data : any[] = []
-      important.map((imp: any) => {
-        const {
-          name,
-          localDate,
-          utcDate,
-          id,
-          venue,
-          minPrice,
-          maxPrice,
-          avgPrice,
-          medianPrice,
-          listingCount,
-          ticketCount,
-          dateTbd,
-          timeTbd,
-          ifNecessary,
-          organicUrl,
-          webPath,
-          onsaleDate,
-          presaleDate,
-        } = imp;
-        // const obj = {
-        //     name,
-        //     date: {
-        //         localDate,
-        //         utcDate,
-        //         onsaleDate,
-        //         presaleDate,
-        //     },
-        //     prices: {
-        //         minPrice,
-        //         maxPrice,
-        //         avgPrice,
-        //         medianPrice,
-        //     },
-        //     ticketCount,
-        //     listingCount,
-        //     dateTbd,
-        //     timeTbd,
-        //     ifNecessary,
-        //     venue,
-        //     urls: {
-        //         organicUrl,
-        //         webPath,
-        //     },
-        // };
+      if (important) {
 
-        const obj = {
-          // id: "nba",
-          // title: "nba",
-          // description: "nba package description",
-          acitve_pkgs: [
-            {
-              path: "/p/packages/sports/basketball/nba/" + id,
-              id,
-              title: name,
-              event_description: description,
-              date: "Sun • TBD",
-              venue: venue.name + " in " + venue.city,
-              price: avgPrice,
-              maxPrice,
-              avgPrice,
-              medianPrice,
-              ticketCount,
-              category_btn_type,
-              category: pkg_categ,
-              remainingText: "Available",
-              hotels: [
-                {
-                  name: "",
-                  price_per_person: {
-                    basic: 124,
-                    premium: 110.55,
-                    premium_plus: 129.99,
+
+        // const ticketvista_data : any[] = []
+        important.map((imp: any) => {
+          const {
+            name,
+            localDate,
+            utcDate,
+            id,
+            venue,
+            minPrice,
+            maxPrice,
+            avgPrice,
+            medianPrice,
+            listingCount,
+            ticketCount,
+            dateTbd,
+            timeTbd,
+            ifNecessary,
+            organicUrl,
+            webPath,
+            onsaleDate,
+            presaleDate,
+          } = imp;
+          // const obj = {
+          //     name,
+          //     date: {
+          //         localDate,
+          //         utcDate,
+          //         onsaleDate,
+          //         presaleDate,
+          //     },
+          //     prices: {
+          //         minPrice,
+          //         maxPrice,
+          //         avgPrice,
+          //         medianPrice,
+          //     },
+          //     ticketCount,
+          //     listingCount,
+          //     dateTbd,
+          //     timeTbd,
+          //     ifNecessary,
+          //     venue,
+          //     urls: {
+          //         organicUrl,
+          //         webPath,
+          //     },
+          // };
+
+          const obj = {
+            // id: "nba",
+            // title: "nba",
+            // description: "nba package description",
+            acitve_pkgs: [
+              {
+                path: "/p/packages/sports/basketball/nba/" + id,
+                id,
+                title: name,
+                event_description: description,
+                date: "Sun • TBD",
+                venue: venue.name + " in " + venue.city,
+                price: avgPrice,
+                maxPrice,
+                avgPrice,
+                medianPrice,
+                ticketCount,
+                category_btn_type,
+                category: pkg_categ,
+                remainingText: "Available",
+                hotels: [
+                  {
+                    name: "",
+                    price_per_person: {
+                      basic: 124,
+                      premium: 110.55,
+                      premium_plus: 129.99,
+                    },
                   },
-                },
-              ],
-            },
-          ],
-        };
+                ],
+              },
+            ],
+          };
 
-        scraped_data.push(obj);
-      });
-      await Dataset.pushData(scraped_data);
+          scraped_data.push(obj);
+        });
+        await Dataset.pushData(scraped_data);
+      } else {
+        log.error("Ticket items was empty")
+      }
     } else {
       log.error("__NEXT_DATA__ is not supported on this page");
     }
