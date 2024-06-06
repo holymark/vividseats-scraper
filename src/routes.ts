@@ -1,23 +1,27 @@
-import { createCheerioRouter, log, Dataset, RequestQueue } from "crawlee";
+import { createCheerioRouter, log, Dataset, RequestQueue, enqueueLinks } from "crawlee";
 import { base_url, labels } from "./constants.js";
 
 
 export const router = createCheerioRouter();
 
+const __next_data__ = ($:any) => {
+  const script = $("#__NEXT_DATA__").text();
+
+  return script ? JSON.parse(script) : null;
+};
+
+
 // summary of the main page
-router.addHandler(labels.Start, async ({ request, $ }) => {
+router.addHandler(labels.Start, async ({ request, $, enqueueLinks }) => {
   const { url } = request;
   log.info(`enqueing new urls in [${url}], [label: Start]`);
 
-  const __next_data__ = () => {
-    const script = $("#__NEXT_DATA__").text();
+  const nextdata = __next_data__($)
 
-    return script ? JSON.parse(script) : null;
-  };
 
-  if (__next_data__()) {
+  if (nextdata) {
     // const scraped_data: any[] = [];
-    const page_props = __next_data__().props.pageProps;
+    const page_props = nextdata.props.pageProps;
     const important_opts = page_props.performersDataByLinkGroups;
 
     const links = important_opts.flatMap((group: any) => {
@@ -29,7 +33,13 @@ router.addHandler(labels.Start, async ({ request, $ }) => {
     const request_queue = await RequestQueue.open();
     for (const item of links) {
       let _url = base_url + item.link_url;
-      await request_queue.addRequest({ url: _url, label: "default" });
+      console.log(_url)
+      await enqueueLinks({
+        urls: [_url],
+        requestQueue: request_queue,
+        label: labels.Lists
+      });
+      await request_queue.addRequest({ url: _url, label:  labels.Lists });
     }
   }
 });
@@ -38,15 +48,10 @@ router.addHandler(labels.Lists, async ({ $, request }) => {
   const { url } = request;
   log.info(`crawling ${url}, [label: Lists]`);
 
-  const __next_data__ = () => {
-    const script = $("#__NEXT_DATA__").text();
-
-    return script ? JSON.parse(script) : null;
-  };
-
-  if (__next_data__()) {
+  const nextdata = __next_data__($)
+  if (nextdata) {
     const scraped_data: any[] = [];
-    const page_props = __next_data__().props.pageProps;
+    const page_props = nextdata.props.pageProps;
     const important_opts = page_props.productionListData
       ? "productionListData"
       : page_props.initialProductionListData
@@ -154,6 +159,7 @@ router.addHandler(labels.Lists, async ({ $, request }) => {
   }
 });
 
-router.addDefaultHandler(async ({ request }) => {
+router.addDefaultHandler(async ({ request , enqueueLinks}) => {
   log.info(`Default Handler Scraping ${request.url}`);
+  await enqueueLinks()
 });

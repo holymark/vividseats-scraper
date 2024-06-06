@@ -9,7 +9,7 @@ import { Input } from './types.js';
 await Actor.init();
 
 const {
-    startUrls,
+    startUrls = ["https://www.vividseats.com/nba-basketball"],
     maxRequestsPerCrawl = 100,
     proxyConfiguration: proxyConfig = {
         useApifyProxy: true,
@@ -34,14 +34,14 @@ const crawler = new CheerioCrawler({
 
 
 startUrls.forEach(async (url) => {
-    await crawler.addRequests([Object.assign(url, { label: labels.Start })])
+        console.log(url)
+        await crawler.addRequests([{ url, label:  labels.Start }]);
 });
 
 console.log("Crawler Started >>>>")
+await crawler.run();
 Actor.exit()
 console.log("Crawler Ended >>>>")
-
-
 
 /**
  * // gotscraping
