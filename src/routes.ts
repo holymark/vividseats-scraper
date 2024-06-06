@@ -37,14 +37,20 @@ router.addHandler(labels.Start, async ({ request, $ }) => {
     const request_queue = await RequestQueue.open();
     for (const item of links) {
       let _url = base_url + item.link_url;
-      await request_queue.addRequest({ url: _url, label: labels.Lists });
+      await request_queue.addRequest(
+        {
+          url: _url,
+          label: labels.Lists,
+          userData: { link_title: item.link_title }
+        });
     }
   }
 });
 
 router.addHandler(labels.Lists, async ({ $, request }) => {
-  const { url } = request;
+  const { url, userData } = request;
   log.info(`crawling ${url}, [label: Lists]`);
+  const { link_title } = userData;
 
   const nextdata = __next_data__($);
   if (nextdata) {
@@ -55,9 +61,9 @@ router.addHandler(labels.Lists, async ({ $, request }) => {
       : page_props.initialProductionListData
         ? "initialProductionListData"
         : null;
-    const description = page_props.customPage.content ? page_props.customPage.content : "No description available";
-    const category_btn_type = page_props.customPage.title ? page_props.customPage.content : "No category titile available";
-    const pkg_categ = page_props.customPage.category.subCategories.name ? page_props.customPage.category.subCategories.name : "No sub-categories name available"
+    // const description = page_props.customPage!.content ? page_props.customPage.content : "No description available";
+    // const category_btn_type = page_props.customPage.title ? page_props.customPage.content : "No category titile available";
+    const pkg_categ = link_title ? link_title : "Unspecified"
 
     if (important_opts) {
       const important =
@@ -124,7 +130,7 @@ router.addHandler(labels.Lists, async ({ $, request }) => {
                 path: "/p/packages/sports/basketball/nba/" + id,
                 id,
                 title: name,
-                event_description: description,
+                // event_description: description,
                 date: "Sun • TBD",
                 venue: venue.name + " in " + venue.city,
                 price: avgPrice,
@@ -132,7 +138,7 @@ router.addHandler(labels.Lists, async ({ $, request }) => {
                 avgPrice,
                 medianPrice,
                 ticketCount,
-                category_btn_type,
+                // category_btn_type,
                 category: pkg_categ,
                 remainingText: "Available",
                 hotels: [
