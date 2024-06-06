@@ -1,6 +1,12 @@
-import { createCheerioRouter, log, Dataset, RequestQueue, enqueueLinks, EnqueueStrategy } from "crawlee";
+import {
+  createCheerioRouter,
+  log,
+  Dataset,
+  RequestQueue,
+  enqueueLinks,
+  EnqueueStrategy,
+} from "crawlee";
 import { base_url, labels } from "./constants.js";
-
 
 export const router = createCheerioRouter();
 
@@ -10,14 +16,12 @@ const __next_data__ = ($: any) => {
   return script ? JSON.parse(script) : null;
 };
 
-
 // summary of the main page
 router.addHandler(labels.Start, async ({ request, $ }) => {
   const { url } = request;
   log.info(`enqueing new urls in [${url}], [label: Start]`);
 
-  const nextdata = __next_data__($)
-
+  const nextdata = __next_data__($);
 
   if (nextdata) {
     // const scraped_data: any[] = [];
@@ -33,12 +37,6 @@ router.addHandler(labels.Start, async ({ request, $ }) => {
     const request_queue = await RequestQueue.open();
     for (const item of links) {
       let _url = base_url + item.link_url;
-      console.log(_url)
-      // await enqueueLinks({
-      //   urls: [_url],
-      //   requestQueue: request_queue,
-      //   label: labels.Lists
-      // });
       await request_queue.addRequest({ url: _url, label: labels.Lists });
     }
   }
@@ -48,23 +46,25 @@ router.addHandler(labels.Lists, async ({ $, request }) => {
   const { url } = request;
   log.info(`crawling ${url}, [label: Lists]`);
 
-  const nextdata = __next_data__($)
+  const nextdata = __next_data__($);
   if (nextdata) {
     const scraped_data: any[] = [];
     const page_props = nextdata.props.pageProps;
     const important_opts = page_props.productionListData
       ? "productionListData"
       : page_props.initialProductionListData
-        ? "initialProductionListData"
-        : null;
+      ? "initialProductionListData"
+      : null;
     const description = page_props.customPage.content;
     const category_btn_type = page_props.customPage.title;
     const pkg_categ = page_props.customPage.category.subCategories.name;
 
     if (important_opts) {
-      const important = page_props[important_opts].items;
+      const important =
+        page_props[important_opts].items.length > 0
+          ? page_props[important_opts].items
+          : null;
       // const ticketvista_data : any[] = []
-
       important.map((imp: any) => {
         const {
           name,
@@ -160,15 +160,12 @@ router.addHandler(labels.Lists, async ({ $, request }) => {
 });
 
 router.addDefaultHandler(async ({ request, enqueueLinks }) => {
-  const { url, label } = request
+  const { url, label } = request;
 
-  log.info(`Enqueueing >>> ${url} from >>> Default Handler`)
+  log.info(`Enqueueing >>> ${url} from >>> Default Handler`);
 
-  await enqueueLinks(
-    {
-      label: labels.Home,
-      strategy: EnqueueStrategy.SameDomain,
-    }
-  )
-
-})
+  await enqueueLinks({
+    label: labels.Home,
+    strategy: EnqueueStrategy.SameDomain,
+  });
+});
