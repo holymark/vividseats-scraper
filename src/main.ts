@@ -1,4 +1,4 @@
-import { CheerioCrawler, ProxyConfiguration } from 'crawlee';
+import { CheerioCrawler } from 'crawlee';
 import { router } from './routes.js';
 import { labels } from './constants.js';
 import { Actor } from 'apify';
@@ -28,47 +28,20 @@ const crawler = new CheerioCrawler({
     },
     persistCookiesPerSession: true,
 
-    maxConcurrency: 2, 
+    maxConcurrency: 2,
 });
 
 
 
-startUrls.forEach(async (url) => {
-        console.log(url)
-        await crawler.addRequests([{ url, label:  labels.Start }]);
-});
 
-console.log("Crawler Started >>>>")
-await crawler.run();
-Actor.exit()
+for await (const url of startUrls) {
+    console.log("Crawler Started >>>>")
+    await crawler.run(
+        [
+            {  url, label: labels.Start }
+        ]
+    );
+}
+await Actor.exit()
 console.log("Crawler Ended >>>>")
 
-/**
- * // gotscraping
- headerOptions: {
-    devices: ["desktop"],
-    locales: ["en-UU"],
-    operatingSytems: ["windows"]
- }
-
- // crawlee
- import { PlaywrightCrawler } from 'crawlee';
-
-const crawler = new PlaywrightCrawler({
-    browserPoolOptions: {
-        useFingerprints: true, // this is the default
-        fingerprintOptions: {
-            fingerprintGeneratorOptions: {
-                browsers: [{ name: 'edge', minVersion: 96 }],
-                devices: ['desktop'],
-                operatingSystems: ['windows'],
-            },
-        },
-    },
-    requestHandler: async ({ page }) => {
-        // use the human-like Playwright page
-    }
-});
-
-
- */

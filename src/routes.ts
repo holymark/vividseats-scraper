@@ -1,10 +1,10 @@
-import { createCheerioRouter, log, Dataset, RequestQueue, enqueueLinks } from "crawlee";
+import { createCheerioRouter, log, Dataset, RequestQueue, enqueueLinks, EnqueueStrategy } from "crawlee";
 import { base_url, labels } from "./constants.js";
 
 
 export const router = createCheerioRouter();
 
-const __next_data__ = ($:any) => {
+const __next_data__ = ($: any) => {
   const script = $("#__NEXT_DATA__").text();
 
   return script ? JSON.parse(script) : null;
@@ -12,7 +12,7 @@ const __next_data__ = ($:any) => {
 
 
 // summary of the main page
-router.addHandler(labels.Start, async ({ request, $, enqueueLinks }) => {
+router.addHandler(labels.Start, async ({ request, $ }) => {
   const { url } = request;
   log.info(`enqueing new urls in [${url}], [label: Start]`);
 
@@ -34,12 +34,12 @@ router.addHandler(labels.Start, async ({ request, $, enqueueLinks }) => {
     for (const item of links) {
       let _url = base_url + item.link_url;
       console.log(_url)
-      await enqueueLinks({
-        urls: [_url],
-        requestQueue: request_queue,
-        label: labels.Lists
-      });
-      await request_queue.addRequest({ url: _url, label:  labels.Lists });
+      // await enqueueLinks({
+      //   urls: [_url],
+      //   requestQueue: request_queue,
+      //   label: labels.Lists
+      // });
+      await request_queue.addRequest({ url: _url, label: labels.Lists });
     }
   }
 });
@@ -55,8 +55,8 @@ router.addHandler(labels.Lists, async ({ $, request }) => {
     const important_opts = page_props.productionListData
       ? "productionListData"
       : page_props.initialProductionListData
-      ? "initialProductionListData"
-      : null;
+        ? "initialProductionListData"
+        : null;
     const description = page_props.customPage.content;
     const category_btn_type = page_props.customPage.title;
     const pkg_categ = page_props.customPage.category.subCategories.name;
@@ -159,7 +159,16 @@ router.addHandler(labels.Lists, async ({ $, request }) => {
   }
 });
 
-router.addDefaultHandler(async ({ request , enqueueLinks}) => {
-  log.info(`Default Handler Scraping ${request.url}`);
-  await enqueueLinks()
-});
+router.addDefaultHandler(async ({ request, enqueueLinks }) => {
+  const { url, label } = request
+
+  log.info(`Enqueueing >>> ${url} from >>> Default Handler`)
+
+  await enqueueLinks(
+    {
+      label: labels.Home,
+      strategy: EnqueueStrategy.SameDomain,
+    }
+  )
+
+})
