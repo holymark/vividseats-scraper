@@ -1,13 +1,11 @@
 import  fs  from 'fs';
 import  path  from 'path';
 
-// Function to read a JSON file and return its content as an object
 function readJsonFile(filePath) {
   const content = fs.readFileSync(filePath, 'utf-8');
   return JSON.parse(content);
 }
 
-// Function to merge multiple JSON files into one
 function mergeJsonFiles(inputDirectory, outputFilePath) {
   const files = fs.readdirSync(inputDirectory).filter(file => file.endsWith('.json'));
   
@@ -23,9 +21,8 @@ function mergeJsonFiles(inputDirectory, outputFilePath) {
   console.log(`Merged JSON data saved to ${outputFilePath}`);
 }
 
-// Define the input directory containing JSON files and the output file path
-const inputDirectory = './storage/datasets/default'; // Change this to your input directory
-const outputFilePath = './merged.json'; // Change this to your desired output file path
+const inputDirectory = './storage/datasets/default';
+const outputFilePath = './merged.json'; 
 
 // Merge the JSON files
 mergeJsonFiles(inputDirectory, outputFilePath);
