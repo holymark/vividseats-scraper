@@ -24,5 +24,4 @@ function mergeJsonFiles(inputDirectory, outputFilePath) {
 const inputDirectory = './storage/datasets/default';
 const outputFilePath = './merged.json'; 
 
-// Merge the JSON files
 mergeJsonFiles(inputDirectory, outputFilePath);

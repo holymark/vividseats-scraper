@@ -1,0 +1,24 @@
+function extractSportsLinks() {
+    const sportsLinks = [];
+    
+    const sportsSection = document.querySelectorAll('div[data-testid="link-widget"]')[0];
+    
+    if (sportsSection) {
+        const anchorTags = sportsSection.querySelectorAll('a[href]');
+        
+        anchorTags.forEach(tag => {
+            const href = tag.getAttribute('href');
+            const text = tag.textContent.trim();
+            sportsLinks.push({ text, href: `https://www.vividseats.com${href}` });
+        });
+    }
+    
+    return sportsLinks;
+}
+
+const links = extractSportsLinks();
+console.log(links);
+
+links.forEach((link)=>{
+    console.log(link.href) 
+ })
