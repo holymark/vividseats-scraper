@@ -41,20 +41,10 @@ https://www.vividseats.com/sports/motorsports
 https://www.vividseats.com/nascar-racing
 
 14. Wrestling
-https://www.vividseats.com/aew-all-elite-wrestling-tickets--sports-wrestling/performer/100695
-https://www.vividseats.com/aew-dynamite-tickets--sports-wrestling/performer/121777
- https://www.vividseats.com/aew-full-gear-tickets--sports-wrestling/performer/134762
-https://www.vividseats.com/aew-rampage-tickets--sports-wrestling/performer/133583
-https://www.vividseats.com/ncaa-wrestling-championships-tickets--sports-wrestling/performer/1675
-https://www.vividseats.com/wwe-extreme-rules-tickets--sports-wrestling/performer/26093
-https://www.vividseats.com/wwe-smackdown-tickets--sports-wrestling/performer/26076
-https://www.vividseats.com/wwe-raw-tickets--sports-wrestling/performer/26077
-https://www.vividseats.com/wwe-royal-rumble-tickets--sports-wrestling/performer/26089
-https://www.vividseats.com/wwe-smackdown-tickets--sports-wrestling/performer/26076
-https://www.vividseats.com/wwe-survivor-series-tickets--sports-wrestling/performer/26090
-https://www.vividseats.com/wwe-wrestlemania-tickets--sports-wrestling/performer/26088
+https://www.vividseats.com/sports/wrestling
 
-15. NCAA Basketball
+15. Rodeo
+https://www.vividseats.com/sports/rodeo
 
 16. NCAA Football
 https://www.vividseats.com/ncaa
