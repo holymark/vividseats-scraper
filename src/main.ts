@@ -9,7 +9,7 @@ import { Input } from './types.js';
 await Actor.init();
 
 const {
-    startUrls = ["https://www.vividseats.com/pga-golf"],
+    startUrls = ["https://www.vividseats.com/nhl-hockey"],
     maxRequestsPerCrawl = 100,
     proxyConfiguration: proxyConfig = {
         useApifyProxy: true,

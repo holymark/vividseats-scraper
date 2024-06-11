@@ -1,28 +1,28 @@
-1. Golf
+1. Golf ✔✔✔✔
 https://www.vividseats.com/pga-golf
 
-2. Baseball
+2. Baseball ✔✔✔✔
 https://www.vividseats.com/mlb-baseball
 
 3. Basketball ✔✔✔✔
 https://www.vividseats.com/nba-basketball 
 https://www.vividseats.com/ncaab
 
-4. Boxing and Fighting
+4. Boxing and Fighting ✔✔✔✔
 https://www.vividseats.com/sports/boxing-fighting
 
-5. Extreme Sports
+5. Extreme Sports ✔✔✔✔
 https://www.vividseats.com/sports/extreme-sports
 
-6. Football
+6. Football ✔✔✔✔
 https://www.vividseats.com/sports/arena-football
 https://www.vividseats.com/ncaaf
 https://www.vividseats.com/nfl
 
-7. Gymnastics
+7. Gymnastics ✔✔✔✔
 https://www.vividseats.com/sports/gymnastics
 
-8. Hockey
+8. Hockey ✔✔✔✔
 https://www.vividseats.com/nhl-hockey
 
 9. Horse Racing
@@ -46,8 +46,6 @@ https://www.vividseats.com/sports/wrestling
 15. Rodeo
 https://www.vividseats.com/sports/rodeo
 
-16. NCAA Football
-https://www.vividseats.com/ncaa
 
 20. Soccer
 https://www.vividseats.com/sports/soccer
