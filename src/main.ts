@@ -1,6 +1,6 @@
 import { CheerioCrawler } from 'crawlee';
 import { router } from './routes.js';
-import { labels } from './constants.js';
+import { URLs_crawlable, labels } from './constants.js';
 import { Actor } from 'apify';
 import { Input } from './types.js';
 
@@ -8,8 +8,9 @@ import { Input } from './types.js';
 
 await Actor.init();
 
+
 const {
-    startUrls = ["https://www.vividseats.com/nhl-hockey"],
+    startUrls = URLs_crawlable.sports.Basketball,
     maxRequestsPerCrawl = 800,
     proxyConfiguration: proxyConfig = {
         useApifyProxy: true,
@@ -38,7 +39,7 @@ for await (const url of startUrls) {
     console.log("Crawler Started >>>>")
     await crawler.run(
         [
-            {  url, label: labels.Start }
+            { url, label: labels.Start }
         ]
     );
 }
