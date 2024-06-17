@@ -152,7 +152,7 @@ router.addHandler(labels.Lists, async ({ $, request }) => {
 
           scraped_data.push(obj);
         });
-        // await Dataset.pushData(scraped_data);
+        await Dataset.pushData(scraped_data);
         await customPushData(scraped_data,url)
       } else {
         log.error("Ticket items was empty")

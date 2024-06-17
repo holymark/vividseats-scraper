@@ -3,8 +3,11 @@ import { router } from './routes.js';
 import { URLs_crawlable, labels } from './constants.js';
 import { Actor } from 'apify';
 import { Input } from './types.js';
+import { configDotenv } from 'dotenv';
 
-
+configDotenv();
+const { APIFY_PROXY_HOSTNAME, APIFY_PROXY_PORT, APIFY_PROXY_PASSWORD } = process.env;
+const connectionString = `http://auto:${APIFY_PROXY_PASSWORD}@${APIFY_PROXY_HOSTNAME}:${APIFY_PROXY_PORT}`;
 
 await Actor.init();
 
