@@ -7,6 +7,8 @@ import {
   EnqueueStrategy,
 } from "crawlee";
 import { base_url, labels } from "./constants.js";
+import { customPushData } from "./lib.js";
+import { DataItem } from "../types.js";
 
 export const router = createCheerioRouter();
 
@@ -54,7 +56,7 @@ router.addHandler(labels.Lists, async ({ $, request }) => {
 
   const nextdata = __next_data__($);
   if (nextdata) {
-    const scraped_data: any[] = [];
+    const scraped_data: DataItem[] = [];
     const page_props = nextdata.props.pageProps;
     const important_opts = page_props.productionListData
       ? "productionListData"
@@ -121,11 +123,7 @@ router.addHandler(labels.Lists, async ({ $, request }) => {
           //     },
           // };
 
-          const obj = {
-            // id: "nba",
-            // title: "nba",
-            // description: "nba package description",
-
+          const obj: DataItem = {
             path: "/p/packages/sports/basketball/nba/" + id,
             id,
             title: name,
@@ -154,7 +152,8 @@ router.addHandler(labels.Lists, async ({ $, request }) => {
 
           scraped_data.push(obj);
         });
-        await Dataset.pushData(scraped_data);
+        // await Dataset.pushData(scraped_data);
+        await customPushData(scraped_data,url)
       } else {
         log.error("Ticket items was empty")
       }

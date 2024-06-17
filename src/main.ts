@@ -10,7 +10,7 @@ await Actor.init();
 
 const {
     startUrls = ["https://www.vividseats.com/nhl-hockey"],
-    maxRequestsPerCrawl = 100,
+    maxRequestsPerCrawl = 800,
     proxyConfiguration: proxyConfig = {
         useApifyProxy: true,
     },
