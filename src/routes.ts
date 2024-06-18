@@ -152,8 +152,11 @@ router.addHandler(labels.Lists, async ({ $, request }) => {
 
           scraped_data.push(obj);
         });
-        await Dataset.pushData(scraped_data);
-        await customPushData(scraped_data,url)
+        // await Dataset.pushData(scraped_data);
+
+        const [category, subcategory] = request.userData.category.split('/');
+
+        await customPushData(scraped_data, category, subcategory)
       } else {
         log.error("Ticket items was empty")
       }

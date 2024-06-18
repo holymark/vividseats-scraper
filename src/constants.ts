@@ -14,7 +14,7 @@ export const URLs_crawlable = {
     Family: "https://www.vividseats.com/theater/family",
     Musical: "https://www.vividseats.com/theater/musicals",
     Dance: "https://www.vividseats.com/theater/ballet-dance",
-    "Public Speaking": "https://www.vividseats.com/theater/public-speaking",
+    PublicSpeaking: "https://www.vividseats.com/theater/public-speaking",
   },
   concerts: {
     Festivals: "https://www.vividseats.com/concerts/festivals",
