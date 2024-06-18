@@ -1,4 +1,4 @@
-import * as fs from "fs";
+import * as fs from "fs/promises";
 import * as path from "path";
 import { DataItem } from "../types.js";
 import { fileURLToPath } from "url";
@@ -22,9 +22,9 @@ export const customPushData = async (
     subcategory
   );
 
-  fs.mkdirSync(directoryPath, { recursive: true });
+  await fs.mkdir(directoryPath, { recursive: true });
   const filePath = path.join(directoryPath, "data.json");
-  fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
+  await fs.writeFile(filePath, JSON.stringify(data, null, 2));
 
   // Create the directory if it doesn't exist
   //     if (!fs.existsSync(folderPath)) {

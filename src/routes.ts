@@ -20,7 +20,8 @@ const __next_data__ = ($: any) => {
 
 // summary of the main page
 router.addHandler(labels.Start, async ({ request, $ }) => {
-  const { url } = request;
+  const { url, userData } = request;
+  console.log({url, userData})
   log.info(`enqueing new urls in [${url}], [label: Start]`);
 
   const nextdata = __next_data__($);
@@ -37,14 +38,15 @@ router.addHandler(labels.Start, async ({ request, $ }) => {
     });
 
     const request_queue = await RequestQueue.open();
+    const [category, subcategory] = userData.category.split("/");
+
     for (const item of links) {
       let _url = base_url + item.link_url;
-      await request_queue.addRequest(
-        {
-          url: _url,
-          label: labels.Lists,
-          userData: { link_title: item.link_title }
-        });
+      await request_queue.addRequest({
+        url: _url,
+        label: labels.Lists,
+        userData: { link_title: item.link_title, category, subcategory },
+      });
     }
   }
 });
@@ -61,11 +63,11 @@ router.addHandler(labels.Lists, async ({ $, request }) => {
     const important_opts = page_props.productionListData
       ? "productionListData"
       : page_props.initialProductionListData
-        ? "initialProductionListData"
-        : null;
+      ? "initialProductionListData"
+      : null;
     // const description = page_props.customPage!.content ? page_props.customPage.content : "No description available";
     // const category_btn_type = page_props.customPage.title ? page_props.customPage.content : "No category titile available";
-    const pkg_categ = link_title ? link_title : "Unspecified"
+    const pkg_categ = link_title ? link_title : "Unspecified";
 
     if (important_opts) {
       const important =
@@ -73,8 +75,6 @@ router.addHandler(labels.Lists, async ({ $, request }) => {
           ? page_props[important_opts].items
           : null;
       if (important) {
-
-
         // const ticketvista_data : any[] = []
         important.map((imp: any) => {
           const {
@@ -154,11 +154,11 @@ router.addHandler(labels.Lists, async ({ $, request }) => {
         });
         // await Dataset.pushData(scraped_data);
 
-        const [category, subcategory] = request.userData.category.split('/');
+        const [category, subcategory] = userData.category.split("/");
 
-        await customPushData(scraped_data, category, subcategory)
+        await customPushData(scraped_data, category, subcategory);
       } else {
-        log.error("Ticket items was empty")
+        log.error("Ticket items was empty");
       }
     } else {
       log.error("__NEXT_DATA__ is not supported on this page");
