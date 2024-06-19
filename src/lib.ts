@@ -19,7 +19,7 @@ export const customPushData = async (
     subcategory
   );
 
-  console.log(directoryPath);
+  console.log({ path: directoryPath });
   await fs.mkdir(directoryPath, { recursive: true });
   const filePath = path.join(directoryPath, "data.json");
   await fs.writeFile(filePath, JSON.stringify(data, null, 2));

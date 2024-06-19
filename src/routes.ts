@@ -21,7 +21,6 @@ const __next_data__ = ($: any) => {
 // summary of the main page
 router.addHandler(labels.Start, async ({ request, $ }) => {
   const { url, userData } = request;
-  console.log({ url, userData });
   log.info(`enqueing new urls in [${url}], [label: Start]`);
 
   const nextdata = __next_data__($);
@@ -53,6 +52,8 @@ router.addHandler(labels.Start, async ({ request, $ }) => {
 
 router.addHandler(labels.Lists, async ({ $, request }) => {
   const { url, userData } = request;
+  const { category, subcategory } = userData;
+
   log.info(`crawling ${url}, [label: Lists]`);
   const { link_title } = userData;
 
@@ -99,7 +100,10 @@ router.addHandler(labels.Lists, async ({ $, request }) => {
           } = imp;
 
           const obj: DataItem = {
-            path: "/p/packages/sports/basketball/nba/" + id,
+            path: `/p/packages/${category}/${subcategory.toLowerCase()}/<precategory>/${id}`,
+            _category:category,
+            _subcategory: subcategory,
+            url,
             id,
             title: name,
             venue: venue.name + " in " + venue.city,
@@ -132,11 +136,9 @@ router.addHandler(labels.Lists, async ({ $, request }) => {
 
           scraped_data.push(obj);
         });
-        // await Dataset.pushData(scraped_data);
+        await Dataset.pushData(scraped_data);
 
-        const [category, subcategory] = userData.category.split("/");
-
-        await customPushData(scraped_data, category, subcategory);
+        // await customPushData(scraped_data, category, subcategory);
       } else {
         log.error("Ticket items was empty");
       }

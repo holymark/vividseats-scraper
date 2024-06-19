@@ -29,7 +29,7 @@ export const URLs_crawlable = {
 
   sports: {
     Golf: "https://www.vividseats.com/pga-golf",
-    Baseball: "https://www.vividseats.com/mlb-baseball",
+    Baseball:[ "https://www.vividseats.com/mlb-baseball",  "https://www.vividseats.com/baseball"],
     Basketball: [
       "https://www.vividseats.com/nba-basketball",
       "https://www.vividseats.com/ncaab",

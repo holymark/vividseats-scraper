@@ -17,16 +17,18 @@ type Date_ = {
 };
 
 type Prices = {
-    minPrice: string| number;
-    maxPrice: string| number;
-    avgPrice: string| number;
-    medianPrice: string| number;
-  
-}
+  minPrice: string | number;
+  maxPrice: string | number;
+  avgPrice: string | number;
+  medianPrice: string | number;
+};
 export interface DataItem {
   path: string;
   id: string; // Or number, depending on the type of 'id'
   title: string;
+  url: string;
+  _category: string;
+  _subcategory: string;
   event_description?: string; // Optional if you want to include it
   venue: string;
   ticketCount: number;
@@ -35,5 +37,5 @@ export interface DataItem {
   category: string;
   remainingText: string;
   hotels: Hotel[];
-  prices: Prices
+  prices: Prices;
 }

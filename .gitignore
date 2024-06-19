@@ -6,3 +6,5 @@ node_modules
 apify_storage
 crawlee_storage
 storage
+src/scraped_data
+src/scraped_data__

@@ -12,7 +12,7 @@ await Actor.init();
 
 const {
   startUrls,
-  maxRequestsPerCrawl = 800,
+  maxRequestsPerCrawl = 1000,
   proxyConfiguration: proxyConfig = {
     useApifyProxy: true,
   },
@@ -59,11 +59,79 @@ const crawlCategory = async (category: keyof typeof URLs_crawlable) => {
     ]);
   }
 };
-
+const crawlSingle = async (
+  url: string,
+  category: keyof typeof URLs_crawlable,
+  subcategory: string
+) => {
+  await crawler.run([
+    {
+      url,
+      label: labels.Start,
+      userData: { category: `${category}/${subcategory}` },
+    },
+  ]);
+};
 console.log("Crawler Started >>>>");
-await crawler.run(startUrls);
+
+// await crawlSingle(URLs_crawlable.sports.Golf, "sports", "Golf");
+// await crawlSingle(URLs_crawlable.sports.ExtremeSports,"sports","ExtremeSports")
+// await crawlSingle(URLs_crawlable.sports.BoxingAndFighting,"sports","BoxingAndFighting")
+
+// await crawlSingle(URLs_crawlable.sports.Gymnastics, "sports", "Gymnastics");
+// await crawlSingle(URLs_crawlable.sports.Hockey, "sports", "Hockey");
+// await crawlSingle(URLs_crawlable.sports.HorseRacing, "sports", "HorseRacing");
+// await crawlSingle(URLs_crawlable.sports.Lacrosse, "sports", "Lacrosse");
+// await crawlSingle(URLs_crawlable.sports.Tennis, "sports", "Tennis");
+// await crawlSingle(URLs_crawlable.sports.Motorsports, "sports", "Motorsports");
+// await crawlSingle(URLs_crawlable.sports.NASCARRacing, "sports", "NASCARRacing");
+// await crawlSingle(URLs_crawlable.sports.Wrestling, "sports", "Wrestling");
+// await crawlSingle(URLs_crawlable.sports.Rodeo, "sports", "Rodeo");
+// await crawlSingle(URLs_crawlable.sports.Soccer, "sports", "Soccer");
+
+// await crawlSingle(URLs_crawlable.concerts.Festivals, "concerts", "Festivals");
+// await crawlSingle(
+//   URLs_crawlable.concerts.Alternative,
+//   "concerts",
+//   "Alternative"
+// );
+// await crawlSingle(URLs_crawlable.concerts.HardRock, "concerts", "HardRock");
+// await crawlSingle(URLs_crawlable.concerts.Pop, "concerts", "Pop");
+// await crawlSingle(URLs_crawlable.concerts.RnB, "concerts", "RnB");
+// await crawlSingle(URLs_crawlable.concerts.RapHipHop, "concerts", "RapHipHop");
+// await crawlSingle(URLs_crawlable.concerts.Rock, "concerts", "Rock");
+// await crawlSingle(
+  //   URLs_crawlable.concerts.CountryAndFolk,
+  //   "concerts",
+//   "CountryAndFolk"
+// );
+
+// await crawlSingle(URLs_crawlable.theater.Comedy, "theater", "Comedy");
+// await crawlSingle(
+//   URLs_crawlable.theater.ArtsAndTheater,
+//   "theater",
+//   "ArtsAndTheater"
+// );
+// await crawlSingle(URLs_crawlable.theater.Broadway, "theater", "Broadway");
+// await crawlSingle(URLs_crawlable.theater.Cirque, "theater", "Cirque");
+// await crawlSingle(URLs_crawlable.theater.Family, "theater", "Family");
+// await crawlSingle(URLs_crawlable.theater.Musical, "theater", "Musical");
+// await crawlSingle(URLs_crawlable.theater.Dance, "theater", "Dance");
+// await crawlSingle(
+//   URLs_crawlable.theater.PublicSpeaking,
+//   "theater",
+//   "PublicSpeaking"
+// );
+// await crawler.run([
+//   {
+//     url: "https://www.vividseats.com/theater/broadway",
+//     label: labels.Start,
+//     userData: { category: `theater/broadway` },
+//   },
+// ]);
+//......................
 await crawlCategory("sports");
-// await crawlCategory("concerts");
-// await crawlCategory("theater");
+await crawlCategory("concerts");
+await crawlCategory("theater");
 await Actor.exit();
 console.log("Crawler Ended >>>>");
