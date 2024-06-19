@@ -12,9 +12,6 @@ export const customPushData = async (
   category: string,
   subcategory: string
 ) => {
-  // Create a directory name based on the URL
-  // const folderName = url.replace(/https?:\/\//, '').replace(/[\/:?]/g, '_');
-  // const folderPath = path.join(__dirname, 'scraped_data', folderName);
   const directoryPath = path.join(
     __dirname,
     "scraped_data",
@@ -22,18 +19,10 @@ export const customPushData = async (
     subcategory
   );
 
+  console.log(directoryPath);
   await fs.mkdir(directoryPath, { recursive: true });
   const filePath = path.join(directoryPath, "data.json");
   await fs.writeFile(filePath, JSON.stringify(data, null, 2));
-
-  // Create the directory if it doesn't exist
-  //     if (!fs.existsSync(folderPath)) {
-  //         fs.mkdirSync(folderPath, { recursive: true });
-  //     }
-
-  //     // Save the data to a file within the directory
-  //     const dataFilePath = path.join(folderPath, 'data.json');
-  //     fs.writeFileSync(dataFilePath, JSON.stringify(data, null, 2));
 };
 
 export const flattenURLs = (

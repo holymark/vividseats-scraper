@@ -21,7 +21,7 @@ const __next_data__ = ($: any) => {
 // summary of the main page
 router.addHandler(labels.Start, async ({ request, $ }) => {
   const { url, userData } = request;
-  console.log({url, userData})
+  console.log({ url, userData });
   log.info(`enqueing new urls in [${url}], [label: Start]`);
 
   const nextdata = __next_data__($);
@@ -97,45 +97,25 @@ router.addHandler(labels.Lists, async ({ $, request }) => {
             onsaleDate,
             presaleDate,
           } = imp;
-          // const obj = {
-          //     name,
-          //     date: {
-          //         localDate,
-          //         utcDate,
-          //         onsaleDate,
-          //         presaleDate,
-          //     },
-          //     prices: {
-          //         minPrice,
-          //         maxPrice,
-          //         avgPrice,
-          //         medianPrice,
-          //     },
-          //     ticketCount,
-          //     listingCount,
-          //     dateTbd,
-          //     timeTbd,
-          //     ifNecessary,
-          //     venue,
-          //     urls: {
-          //         organicUrl,
-          //         webPath,
-          //     },
-          // };
 
           const obj: DataItem = {
             path: "/p/packages/sports/basketball/nba/" + id,
             id,
             title: name,
-            // event_description: description,
-            date: "Sun • TBD",
             venue: venue.name + " in " + venue.city,
-            price: avgPrice,
-            maxPrice,
-            avgPrice,
-            medianPrice,
             ticketCount,
-            // category_btn_type,
+            date: {
+              localDate,
+              utcDate,
+              onsaleDate,
+              presaleDate,
+            },
+            prices: {
+              minPrice,
+              maxPrice,
+              avgPrice,
+              medianPrice,
+            },
             category: pkg_categ,
             remainingText: "Available",
             hotels: [

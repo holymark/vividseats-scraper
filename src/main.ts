@@ -6,12 +6,12 @@ import { Input } from "./types.js";
 import { configDotenv } from "dotenv";
 import { flattenURLs } from "./lib.js";
 
-// configDotenv();
+configDotenv();
 
 await Actor.init();
 
 const {
-  startUrls = [],
+  startUrls,
   maxRequestsPerCrawl = 800,
   proxyConfiguration: proxyConfig = {
     useApifyProxy: true,
@@ -61,8 +61,9 @@ const crawlCategory = async (category: keyof typeof URLs_crawlable) => {
 };
 
 console.log("Crawler Started >>>>");
+await crawler.run(startUrls);
 await crawlCategory("sports");
-await crawlCategory("concerts");
-await crawlCategory("theater");
+// await crawlCategory("concerts");
+// await crawlCategory("theater");
 await Actor.exit();
 console.log("Crawler Ended >>>>");
