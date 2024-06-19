@@ -11,6 +11,7 @@ import { flattenURLs } from "./lib.js";
 await Actor.init();
 
 const {
+  startUrls = [],
   maxRequestsPerCrawl = 800,
   proxyConfiguration: proxyConfig = {
     useApifyProxy: true,
@@ -28,8 +29,13 @@ const crawler = new CheerioCrawler({
     maxPoolSize: 10,
   },
   persistCookiesPerSession: true,
-
-  maxConcurrency: 2,
+  preNavigationHooks: [
+    ({ request }) => {
+      request.headers!["User-Agent"] =
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36";
+    },
+  ],
+  maxConcurrency: 10,
   failedRequestHandler: async ({ request, log }) => {
     log.error(`Failed to crawl ${request.url}`);
   },
@@ -38,41 +44,25 @@ const crawler = new CheerioCrawler({
 // Function to start crawling a specific category
 const crawlCategory = async (category: keyof typeof URLs_crawlable) => {
   const categoryURLs = flattenURLs(URLs_crawlable[category]);
-  const [subcategory] = categoryURLs[0].subcategory.split("/");
-  await crawler.run([
-    {
-      url: categoryURLs[0].url,
-      label: labels.Start,
-      userData: { category: `${category}/${subcategory}` },
-    },
-  ]);
-  //   for (const { url, subcategory } of categoryURLs) {
-  //     console.log("Crawler Started >>>>");
-  //     await crawler.run([
-  //       {
-  //         url,
-  //         label: labels.Start,
-  //         userData: { category: `${category}/${subcategory}` },
-  //       },
-  //     ]);
-  //   }
+  if (categoryURLs.length === 0) {
+    log.error(`No URLs found for category: ${category}`);
+    return;
+  }
+
+  for (const { url, subcategory } of categoryURLs) {
+    await crawler.run([
+      {
+        url,
+        label: labels.Start,
+        userData: { category: `${category}/${subcategory}` },
+      },
+    ]);
+  }
 };
 
-// for await (const url of startUrls) {
-//     await crawler.run(
-//         [
-//             { url, label: labels.Start }
-//         ]
-//     );
-// }
-
-(async () => {
-  console.log("Crawler Started >>>>");
-  await crawlCategory("sports");
-//   await crawlCategory("concerts");
-//   await crawlCategory("theater");
-
-  log.info("Crawling finished. >>>>");
-})();
+console.log("Crawler Started >>>>");
+await crawlCategory("sports");
+await crawlCategory("concerts");
+await crawlCategory("theater");
 await Actor.exit();
 console.log("Crawler Ended >>>>");
