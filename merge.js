@@ -1,12 +1,16 @@
 import { promises as fs } from 'fs';
 import path from 'path';
 
-const directoryPath = './storage/datasets/default'; // Change to your directory path
+const sourceDirectoryPath = './storage/datasets/default'; // Change to your directory path
+const targetDirectoryPath = './merged'; // Directory to create the new directories and merged files
 
-async function createDirectoriesAndMergeJson(directoryPath) {
+async function createDirectoriesAndMergeJson(sourceDirectoryPath, targetDirectoryPath) {
     try {
-        // Read all files in the directory
-        const files = await fs.readdir(directoryPath);
+        // Ensure the target directory exists
+        await fs.mkdir(targetDirectoryPath, { recursive: true });
+
+        // Read all files in the source directory
+        const files = await fs.readdir(sourceDirectoryPath);
 
         // Filter JSON files
         const jsonFiles = files.filter(file => path.extname(file) === '.json');
@@ -14,7 +18,7 @@ async function createDirectoriesAndMergeJson(directoryPath) {
         const subcategoryData = {};
 
         for (const file of jsonFiles) {
-            const filePath = path.join(directoryPath, file);
+            const filePath = path.join(sourceDirectoryPath, file);
 
             // Read and parse JSON file
             const data = await fs.readFile(filePath, 'utf8');
@@ -39,14 +43,14 @@ async function createDirectoriesAndMergeJson(directoryPath) {
         }
 
         for (const category of Object.keys(subcategoryData)) {
-            const categoryDir = path.join(directoryPath, category);
-            
+            const categoryDir = path.join(targetDirectoryPath, category);
+
             // Ensure category directory exists
             await fs.mkdir(categoryDir, { recursive: true });
 
             for (const subcategory of Object.keys(subcategoryData[category])) {
                 const subcategoryDir = path.join(categoryDir, subcategory);
-                
+
                 // Ensure subcategory directory exists
                 await fs.mkdir(subcategoryDir, { recursive: true });
 
@@ -62,4 +66,4 @@ async function createDirectoriesAndMergeJson(directoryPath) {
     }
 }
 
-createDirectoriesAndMergeJson(directoryPath);
+createDirectoriesAndMergeJson(sourceDirectoryPath, targetDirectoryPath);

@@ -7,4 +7,5 @@ apify_storage
 crawlee_storage
 storage
 src/scraped_data
+merged
 src/scraped_data__
