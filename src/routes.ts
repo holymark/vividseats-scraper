@@ -26,26 +26,43 @@ router.addHandler(labels.Start, async ({ request, $ }) => {
   const nextdata = __next_data__($);
 
   if (nextdata) {
-    // const scraped_data: any[] = [];
     const page_props = nextdata.props.pageProps;
-    const important_opts = page_props.performersDataByLinkGroups;
+    const important_opts = page_props.performersDataByLinkGroups
+      ? page_props.performersDataByLinkGroups
+      : page_props.initialSubCategoryPerformersData
+      ? page_props.initialSubCategoryPerformersData
+      : null;
 
-    const links = important_opts.flatMap((group: any) => {
-      return group.links.map((link: any) => {
-        return { link_url: link.url, link_title: link.label };
+    if (
+      important_opts != undefined &&
+      important_opts.length != 0 &&
+      important_opts
+    ) {
+      const isInitialSubCategoryPerformersData =
+        page_props.initialSubCategoryPerformersData === important_opts;
+
+      const links = important_opts.flatMap((group: any) => {
+        return group.links.map((link: any) => {
+          return {
+            link_url: isInitialSubCategoryPerformersData
+              ? link.webpath
+              : link.url,
+            link_title: link.label,
+          };
+        });
       });
-    });
 
-    const request_queue = await RequestQueue.open();
-    const [category, subcategory] = userData.category.split("/");
+      const request_queue = await RequestQueue.open();
+      const [category, subcategory] = userData.category.split("/");
 
-    for (const item of links) {
-      let _url = base_url + item.link_url;
-      await request_queue.addRequest({
-        url: _url,
-        label: labels.Lists,
-        userData: { link_title: item.link_title, category, subcategory },
-      });
+      for (const item of links) {
+        let _url = base_url + item.link_url;
+        await request_queue.addRequest({
+          url: _url,
+          label: labels.Lists,
+          userData: { link_title: item.link_title, category, subcategory },
+        });
+      }
     }
   }
 });
@@ -101,7 +118,7 @@ router.addHandler(labels.Lists, async ({ $, request }) => {
 
           const obj: DataItem = {
             path: `/p/packages/${category}/${subcategory.toLowerCase()}/<precategory>/${id}`,
-            _category:category,
+            _category: category,
             _subcategory: subcategory,
             url,
             id,

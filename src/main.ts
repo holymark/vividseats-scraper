@@ -130,8 +130,8 @@ console.log("Crawler Started >>>>");
 //   },
 // ]);
 //......................
-await crawlCategory("sports");
-await crawlCategory("concerts");
-await crawlCategory("theater");
+// await crawlCategory("sports");
+// await crawlCategory("concerts");
+// await crawlCategory("theater");
 await Actor.exit();
 console.log("Crawler Ended >>>>");
