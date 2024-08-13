@@ -25,6 +25,10 @@ export const URLs_crawlable = {
     RapHipHop: "https://www.vividseats.com/concerts/rap-hiphop",
     Rock: "https://www.vividseats.com/concerts/rock",
     CountryAndFolk: "https://www.vividseats.com/concerts/country-folk",
+    Classical: "https://www.vividseats.com/concerts/classical",
+    Reggae: "https://www.vividseats.com/concerts/reggae",
+    WorldMusic: "https://www.vividseats.com/concerts/world-music",
+    NewAge: "https://www.vividseats.com/concerts/newage",
   },
 
   sports: {
