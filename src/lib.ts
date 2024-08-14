@@ -41,3 +41,8 @@ export const flattenURLs = (
   Object.entries(categoryObj).forEach(([key, val]) => extractURLs(val, key));
   return urls;
 };
+
+export function isVividseats(url: string): boolean {
+  const regex = /^https:\/\/www\.vividseats\.com\//;
+  return regex.test(url);
+}

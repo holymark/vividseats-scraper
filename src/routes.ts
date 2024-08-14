@@ -7,7 +7,7 @@ import {
   EnqueueStrategy,
 } from "crawlee";
 import { base_url, labels } from "./constants.js";
-import { customPushData } from "./lib.js";
+import { customPushData, isVividseats } from "./lib.js";
 import { DataItem } from "../types.js";
 
 export const router = createCheerioRouter();
@@ -27,15 +27,24 @@ router.addHandler(labels.Start, async ({ request, $ }) => {
 
   if (nextdata) {
     const page_props = nextdata?.props?.pageProps;
-    const important_opts = Array.isArray(page_props?.performersDataByLinkGroups) && page_props.performersDataByLinkGroups.length > 0
-  ? page_props.performersDataByLinkGroups
-  : Array.isArray(page_props?.initialSubCategoryPerformersData) && page_props.initialSubCategoryPerformersData.length > 0
-    ? page_props.initialSubCategoryPerformersData
-    : null;
-      
-    console.log('Performers Data:', page_props?.performersDataByLinkGroups[0].links);
-    console.log('Initial SubCategory Performers Data:', page_props?.initialSubCategoryPerformersData);
-        console.log(important_opts)
+    const important_opts =
+      Array.isArray(page_props?.performersDataByLinkGroups) &&
+      page_props.performersDataByLinkGroups.length > 0
+        ? page_props.performersDataByLinkGroups
+        : Array.isArray(page_props?.initialSubCategoryPerformersData) &&
+          page_props.initialSubCategoryPerformersData.length > 0
+        ? page_props.initialSubCategoryPerformersData
+        : null;
+
+    console.log(
+      "Performers Data:",
+      page_props?.performersDataByLinkGroups
+    );
+    console.log(
+      "Initial SubCategory Performers Data:",
+      page_props?.initialSubCategoryPerformersData
+    );
+    console.log(important_opts);
 
     if (
       important_opts != undefined &&
@@ -60,12 +69,14 @@ router.addHandler(labels.Start, async ({ request, $ }) => {
       const [category, subcategory] = userData.category.split("/");
 
       for (const item of links) {
-        let _url = base_url + item.link_url;
-        await request_queue.addRequest({
-          url: _url,
-          label: labels.Lists,
-          userData: { link_title: item.link_title, category, subcategory },
-        });
+        if (!isVividseats(item.link_url)) {
+          let _url = base_url + item.link_url;
+          await request_queue.addRequest({
+            url: _url,
+            label: labels.Lists,
+            userData: { link_title: item.link_title, category, subcategory },
+          });
+        }
       }
     }
   }
@@ -91,7 +102,11 @@ router.addHandler(labels.Lists, async ({ $, request }) => {
     // const category_btn_type = page_props.customPage.title ? page_props.customPage.content : "No category titile available";
     const pkg_categ = link_title ? link_title : "Unspecified";
 
-    if (important_opts) {
+    if (
+      important_opts != undefined &&
+      important_opts.length != 0 &&
+      important_opts
+    ) {
       const important =
         page_props[important_opts].items.length > 0
           ? page_props[important_opts].items
