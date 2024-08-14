@@ -49,7 +49,7 @@ const crawlCategory = async (category: keyof typeof URLs_crawlable) => {
     return;
   }
 
-  for (const { url, subcategory } of categoryURLs) {
+  for await (const { url, subcategory } of categoryURLs) {
     await crawler.run([
       {
         url,
@@ -112,7 +112,7 @@ console.log("Crawler Started >>>>");
 //   "theater",
 //   "ArtsAndTheater"
 // );
-// await crawlSingle(URLs_crawlable.theater.Broadway, "theater", "Broadway");
+await crawlSingle(URLs_crawlable.theater.Broadway, "theater", "Broadway");
 // await crawlSingle(URLs_crawlable.theater.Cirque, "theater", "Cirque");
 // await crawlSingle(URLs_crawlable.theater.Family, "theater", "Family");
 // await crawlSingle(URLs_crawlable.theater.Musical, "theater", "Musical");

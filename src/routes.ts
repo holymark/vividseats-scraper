@@ -26,12 +26,16 @@ router.addHandler(labels.Start, async ({ request, $ }) => {
   const nextdata = __next_data__($);
 
   if (nextdata) {
-    const page_props = nextdata.props.pageProps;
-    const important_opts = page_props.performersDataByLinkGroups
-      ? page_props.performersDataByLinkGroups
-      : page_props.initialSubCategoryPerformersData
-      ? page_props.initialSubCategoryPerformersData
-      : null;
+    const page_props = nextdata?.props?.pageProps;
+    const important_opts = Array.isArray(page_props?.performersDataByLinkGroups) && page_props.performersDataByLinkGroups.length > 0
+  ? page_props.performersDataByLinkGroups
+  : Array.isArray(page_props?.initialSubCategoryPerformersData) && page_props.initialSubCategoryPerformersData.length > 0
+    ? page_props.initialSubCategoryPerformersData
+    : null;
+      
+    console.log('Performers Data:', page_props?.performersDataByLinkGroups[0].links);
+    console.log('Initial SubCategory Performers Data:', page_props?.initialSubCategoryPerformersData);
+        console.log(important_opts)
 
     if (
       important_opts != undefined &&
