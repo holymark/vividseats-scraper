@@ -7,16 +7,10 @@ import {
   EnqueueStrategy,
 } from "crawlee";
 import { base_url, labels } from "./constants.js";
-import { customPushData, isVividseats } from "./lib.js";
+import { __next_data__, customPushData, isVividseats } from "./lib.js";
 import { DataItem } from "../types.js";
 
 export const router = createCheerioRouter();
-
-const __next_data__ = ($: any) => {
-  const script = $("#__NEXT_DATA__").text();
-
-  return script ? JSON.parse(script) : null;
-};
 
 // summary of the main page
 router.addHandler(labels.Start, async ({ request, $ }) => {
@@ -49,6 +43,7 @@ router.addHandler(labels.Start, async ({ request, $ }) => {
     if (
       important_opts != undefined &&
       important_opts.length != 0 &&
+      important_opts.length != null &&
       important_opts
     ) {
       const isInitialSubCategoryPerformersData =
@@ -105,6 +100,7 @@ router.addHandler(labels.Lists, async ({ $, request }) => {
     if (
       important_opts != undefined &&
       important_opts.length != 0 &&
+      important_opts.length != null &&
       important_opts
     ) {
       const important =

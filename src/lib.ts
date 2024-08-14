@@ -46,3 +46,9 @@ export function isVividseats(url: string): boolean {
   const regex = /^https:\/\/www\.vividseats\.com\//;
   return regex.test(url);
 }
+
+export const __next_data__ = ($: any) => {
+  const script = $("#__NEXT_DATA__").text();
+
+  return script ? JSON.parse(script) : null;
+};
