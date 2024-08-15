@@ -82,7 +82,6 @@ router.addHandler(labels.Start, async ({ request, $ }) => {
             };
           }
         );
-        console.log("links", links);
 
         for (const item of links) {
           if (!isVividseats(item.link_url)) {
