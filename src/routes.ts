@@ -18,62 +18,86 @@ router.addHandler(labels.Start, async ({ request, $ }) => {
   log.info(`enqueing new urls in [${url}], [label: Start]`);
 
   const nextdata = __next_data__($);
+  const request_queue = await RequestQueue.open();
+  const [category, subcategory] = userData.category.split("/");
+  let links: any[] = [];
 
   if (nextdata) {
     const page_props = nextdata?.props?.pageProps;
-    const important_opts =
-      Array.isArray(page_props?.performersDataByLinkGroups) &&
-      page_props.performersDataByLinkGroups.length > 0
-        ? page_props.performersDataByLinkGroups
-        : Array.isArray(page_props?.initialSubCategoryPerformersData) &&
-          page_props.initialSubCategoryPerformersData.length > 0
-        ? page_props.initialSubCategoryPerformersData
-        : null;
+    const important_opts = [
+      {
+        performersDataByLinkGroups:
+          Array.isArray(page_props?.performersDataByLinkGroups) &&
+          page_props.performersDataByLinkGroups.length > 0
+            ? page_props.performersDataByLinkGroups
+            : undefined,
 
-    console.log(
-      "Performers Data:",
-      page_props?.performersDataByLinkGroups
-    );
-    console.log(
-      "Initial SubCategory Performers Data:",
-      page_props?.initialSubCategoryPerformersData
-    );
-    console.log(important_opts);
+        initialSubCategoryPerformersData:
+          page_props?.initialSubCategoryPerformersData &&
+          typeof page_props.initialSubCategoryPerformersData === "object"
+            ? page_props.initialSubCategoryPerformersData
+            : undefined,
+      },
+    ];
 
-    if (
-      important_opts != undefined &&
-      important_opts.length != 0 &&
-      important_opts.length != null &&
-      important_opts
-    ) {
-      const isInitialSubCategoryPerformersData =
-        page_props.initialSubCategoryPerformersData === important_opts;
+    if (important_opts) {
+      if (
+        Array.isArray(important_opts[0].performersDataByLinkGroups) &&
+        important_opts[0].performersDataByLinkGroups.length > 0 &&
+        important_opts[0].initialSubCategoryPerformersData !== null
+      ) {
+        const isInitialSubCategoryPerformersData =
+          page_props.initialSubCategoryPerformersData === important_opts;
 
-      const links = important_opts.flatMap((group: any) => {
-        return group.links.map((link: any) => {
-          return {
-            link_url: isInitialSubCategoryPerformersData
-              ? link.webpath
-              : link.url,
-            link_title: link.label,
-          };
-        });
-      });
+        links = important_opts[0].performersDataByLinkGroups.flatMap(
+          (group: any) => {
+            return group.links.map((link: any) => {
+              return {
+                link_url: isInitialSubCategoryPerformersData
+                  ? link.webpath
+                  : link.url,
+                link_title: link.label,
+              };
+            });
+          }
+        );
 
-      const request_queue = await RequestQueue.open();
-      const [category, subcategory] = userData.category.split("/");
+        for (const item of links) {
+          if (!isVividseats(item.link_url)) {
+            let _url = base_url + item.link_url;
+            await request_queue.addRequest({
+              url: _url,
+              label: labels.Lists,
+              userData: { link_title: item.link_title, category, subcategory },
+            });
+          }
+        }
+      } else {
+      
+        links = important_opts[0].initialSubCategoryPerformersData.items.map(
+          (link: any) => {
+            return {
+              link_url: link.webPath,
+              link_title: link.name,
+            };
+          }
+        );
+        console.log("links", links);
 
-      for (const item of links) {
-        if (!isVividseats(item.link_url)) {
-          let _url = base_url + item.link_url;
-          await request_queue.addRequest({
-            url: _url,
-            label: labels.Lists,
-            userData: { link_title: item.link_title, category, subcategory },
-          });
+        for (const item of links) {
+          if (!isVividseats(item.link_url)) {
+            let _url = base_url + item.link_url;
+            await request_queue.addRequest({
+              url: _url,
+              label: labels.Lists,
+              userData: { link_title: item.link_title, category, subcategory },
+            });
+          }
         }
       }
     }
+
+    // console.log("links", links);
   }
 });
 
