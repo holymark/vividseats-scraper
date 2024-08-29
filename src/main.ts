@@ -75,9 +75,9 @@ const crawlSingle = async (
 console.log("Crawler Started >>>>");
 
 
-// await crawlSingle(URLs_crawlable.theater.Musical, "theater", "Musical");
+await crawlSingle(URLs_crawlable.sports.Motorsports, "sports", "Motorsports");
 
-await crawlCategory("sports");
+// await crawlCategory("sports");
 // await crawlCategory("concerts");
 // await crawlCategory("theater");
 await Actor.exit();
